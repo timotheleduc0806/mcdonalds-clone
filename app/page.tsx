@@ -178,7 +178,7 @@ export default function Home() {
         ))}
       </nav>
 
-      {/* Modal component */}
+      {/* Modal componen */}
       <Modal isOpen={isModalOpen} onClose={closeModal} />
     </div>
   );
