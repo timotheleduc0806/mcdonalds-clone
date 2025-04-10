@@ -34,12 +34,15 @@ export default function Home() {
           alt="Promo Banner"
           width={1200}
           height={400}
+          priority
+          unoptimized
           className="w-full h-auto object-cover"
         />
         <p className="text-xs text-gray-500 mt-1 px-4">
           For a limited time only. At participating McDonald’s restaurants in Canada.
         </p>
       </section>
+
 
       {/* Main */}
       <main className="flex flex-col gap-6 px-4 mt-4">
@@ -94,26 +97,32 @@ export default function Home() {
                 title: "$5.25 + tax McMuffin Extr...",
                 expires: "Expires in 6 days",
               },
-            ].map((offer, index) => (
-              <div
-                key={index}
-                onClick={offer.src === "/offers/Offer3.PNG" ? openModal : undefined}
-                className="p-1 flex flex-col items-start justify-start cursor-pointer"
-                style={{ minWidth: 100, maxWidth: 120 }}
-              >
-                <Image
-                  src={offer.src}
-                  alt={offer.alt}
-                  width={100}
-                  height={80}
-                  className="object-contain rounded-xl shadow-[0_6px_10px_-4px_rgba(0,0,0,0.35)]"
-                />
-                <span className="text-sm mt-2 font-medium leading-snug break-words whitespace-normal">
-                  {offer.title}
-                </span>
-                <p className="text-xs text-gray-500">{offer.expires}</p>
-              </div>
-            ))}
+            ].map((offer, index) => {
+              const isPlatinum = offer.src === "/offers/Offer3.PNG";
+              const imageWidth = isPlatinum ? 97 : 100;
+              const imageHeight = isPlatinum ? 70 : 80;
+
+              return (
+                <div
+                  key={index}
+                  onClick={isPlatinum ? openModal : undefined}
+                  className="p-1 flex flex-col items-start justify-start cursor-pointer"
+                  style={{ minWidth: 100, maxWidth: 120 }}
+                >
+                  <Image
+                    src={offer.src}
+                    alt={offer.alt}
+                    width={imageWidth}
+                    height={imageHeight}
+                    className="object-contain rounded-xl shadow-[0_6px_10px_-4px_rgba(0,0,0,0.35)]"
+                  />
+                  <span className="text-sm mt-2 font-medium leading-snug break-words whitespace-normal">
+                    {offer.title}
+                  </span>
+                  <p className="text-xs text-gray-500">{offer.expires}</p>
+                </div>
+              );
+            })}
           </div>
         </section>
 
@@ -146,12 +155,15 @@ export default function Home() {
                 alt={item.alt}
                 width={600}
                 height={300}
+                priority
+                unoptimized
                 className="rounded-xl w-full h-auto object-cover"
               />
               <p className="text-xs text-gray-500 mt-1">{item.disclaimer}</p>
             </div>
           ))}
         </section>
+
       </main>
 
       <nav
@@ -178,7 +190,7 @@ export default function Home() {
         ))}
       </nav>
 
-      {/* Modal componen */}
+      {/* Modal component */}
       <Modal isOpen={isModalOpen} onClose={closeModal} />
     </div>
   );
