@@ -167,28 +167,44 @@ export default function Home() {
       </main>
 
       <nav
-        className="fixed bottom-0 left-0 w-full bg-white flex justify-around items-center py-1"
+        className="fixed bottom-0 left-0 w-full bg-white flex justify-around items-end"
         style={{ fontFamily: 'var(--font-nunito)' }}
       >
         {[
-          { label: 'Home', icon: '/icons/Icon1.PNG' },
+          { label: 'Home', icon: '/icons/IconMain.PNG' },
           { label: 'Order', icon: '/icons/Icon1.PNG' },
           { label: 'Rewards&Offers', icon: '/icons/Icon2.PNG' },
           { label: 'Code', icon: '/icons/Icon3.PNG' },
           { label: 'More', icon: '/icons/Icon4.PNG' }
-        ].map((item, index) => (
-          <div key={index} className="flex flex-col items-center text-[11px] text-gray-700">
-            <Image
-              src={item.icon}
-              alt={item.label}
-              width={32}
-              height={32}
-              className="mb-0.5"
-            />
-            {item.label}
-          </div>
-        ))}
+        ].map((item, index) => {
+          const isHome = item.label === 'Home';
+
+          return (
+            <div
+              key={index}
+              className="flex flex-col items-center justify-end min-w-[64px] h-[56px] px-1 -translate-y-2"
+            >
+              <Image
+                src={item.icon}
+                alt={item.label}
+                width={32}
+                height={32}
+                className="mb-1"
+              />
+              <span
+                className={`text-[11px] leading-none text-gray-700 text-center ${isHome ? 'font-bold' : ''}`}
+              >
+                {item.label}
+              </span>
+            </div>
+          );
+        })}
       </nav>
+
+
+
+
+
 
       {/* Modal component */}
       <Modal isOpen={isModalOpen} onClose={closeModal} />
