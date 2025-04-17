@@ -10,7 +10,7 @@ export default function MorePage() {
     const router = useRouter();
 
     return (
-        <div className="flex flex-col min-h-screen justify-between pb-20 bg-white">
+        <div className="flex flex-col min-h-screen pb-20 bg-white">
             {/* Header */}
             <header className="w-full px-4 py-2 flex justify-between items-center relative">
                 <div className="w-[100px]" />
