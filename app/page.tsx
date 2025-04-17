@@ -2,12 +2,23 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import Modal from "@/components/Modal";
+
+// Utility to calculate how many days until next Sunday
+const getDaysUntilSunday = () => {
+  const today = new Date().getDay(); // Sunday = 0, Monday = 1, ..., Saturday = 6
+  return (7 - today) % 7 || 7;
+};
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+
+  const router = useRouter();
+
+  const daysUntilSunday = getDaysUntilSunday();
 
   return (
     <div className="flex flex-col min-h-screen justify-between pb-20 bg-[#f7f7f7]">
@@ -42,7 +53,6 @@ export default function Home() {
           For a limited time only. At participating McDonald’s restaurants in Canada.
         </p>
       </section>
-
 
       {/* Main */}
       <main className="flex flex-col gap-6 px-4 mt-4">
@@ -83,24 +93,25 @@ export default function Home() {
                 src: "/offers/Offer3.PNG",
                 alt: "Platinum Card 50% Discount",
                 title: "Platinum Card 50% Discount",
-                expires: "Expires tomorrow",
               },
               {
                 src: "/offers/Offer1.PNG",
                 alt: "McWrap Offer",
                 title: "25% off a McWrap",
-                expires: "Expires in 6 days",
               },
               {
                 src: "/offers/Offer2.PNG",
                 alt: "McMuffin Offer",
                 title: "$5.25 + tax McMuffin Extr...",
-                expires: "Expires in 6 days",
               },
             ].map((offer, index) => {
               const isPlatinum = offer.src === "/offers/Offer3.PNG";
               const imageWidth = isPlatinum ? 97 : 100;
               const imageHeight = isPlatinum ? 70 : 80;
+              const expiresText =
+                index === 0
+                  ? 'Expires tomorrow'
+                  : `Expires in ${daysUntilSunday} day${daysUntilSunday > 1 ? 's' : ''}`;
 
               return (
                 <div
@@ -119,10 +130,11 @@ export default function Home() {
                   <span className="text-sm mt-2 font-medium leading-snug break-words whitespace-normal">
                     {offer.title}
                   </span>
-                  <p className="text-xs text-gray-500">{offer.expires}</p>
+                  <p className="text-xs text-gray-500">{expiresText}</p>
                 </div>
               );
             })}
+
           </div>
         </section>
 
@@ -163,26 +175,27 @@ export default function Home() {
             </div>
           ))}
         </section>
-
       </main>
 
+      {/* Bottom Nav with routing */}
       <nav
         className="fixed bottom-0 left-0 w-full bg-white flex justify-around items-end"
         style={{ fontFamily: 'var(--font-nunito)' }}
       >
         {[
-          { label: 'Home', icon: '/icons/IconMain.PNG' },
-          { label: 'Order', icon: '/icons/Icon1.PNG' },
-          { label: 'Rewards&Offers', icon: '/icons/Icon2.PNG' },
-          { label: 'Code', icon: '/icons/Icon3.PNG' },
-          { label: 'More', icon: '/icons/Icon4.PNG' }
+          { label: 'Home', icon: '/icons/IconMain.PNG', path: '/' },
+          { label: 'Order', icon: '/icons/Icon1.PNG', path: '#' },
+          { label: 'Rewards&Offers', icon: '/icons/Icon2.PNG', path: '#' },
+          { label: 'Code', icon: '/icons/Icon3.PNG', path: '#' },
+          { label: 'More', icon: '/icons/Icon4.PNG', path: '/more' }
         ].map((item, index) => {
           const isHome = item.label === 'Home';
 
           return (
             <div
               key={index}
-              className="flex flex-col items-center justify-end min-w-[64px] h-[56px] px-1 -translate-y-2"
+              onClick={() => item.path !== '#' && router.push(item.path)}
+              className="flex flex-col items-center justify-end min-w-[64px] h-[56px] px-1 -translate-y-2 cursor-pointer"
             >
               <Image
                 src={item.icon}
@@ -192,7 +205,8 @@ export default function Home() {
                 className="mb-1"
               />
               <span
-                className={`text-[11px] leading-none text-gray-700 text-center ${isHome ? 'font-bold' : ''}`}
+                className={`text-[11px] leading-none text-gray-700 text-center ${isHome ? 'font-bold' : ''
+                  }`}
               >
                 {item.label}
               </span>
@@ -200,11 +214,6 @@ export default function Home() {
           );
         })}
       </nav>
-
-
-
-
-
 
       {/* Modal component */}
       <Modal isOpen={isModalOpen} onClose={closeModal} />
