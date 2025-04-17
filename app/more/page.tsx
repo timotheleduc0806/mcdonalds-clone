@@ -9,8 +9,6 @@ import ProfileModal from "@/components/ProfileModal"; // ⬅️ Add this import
 export default function MorePage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isProfileOpen, setIsProfileOpen] = useState(false); // ⬅️ Add this state
-    const openModal = () => setIsModalOpen(true);
-    const closeModal = () => setIsModalOpen(false);
 
     const router = useRouter();
 
@@ -91,9 +89,6 @@ export default function MorePage() {
                 })}
             </nav>
 
-
-            {/* Modal */}
-            <Modal isOpen={isModalOpen} onClose={closeModal} />
 
             {/* New ProfileModal */}
             <ProfileModal isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} />
